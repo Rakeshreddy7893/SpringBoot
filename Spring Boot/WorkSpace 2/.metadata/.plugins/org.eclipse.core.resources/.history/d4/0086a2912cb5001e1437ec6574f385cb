@@ -1,0 +1,8 @@
+package com.dao;
+import org.springframework
+
+
+@Respository
+public interface ProductRespository {
+
+}
