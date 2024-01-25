@@ -15,5 +15,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
 	@Query("from Employee where emailId = :emailId and password = :password")
 	Employee employeeLogin(@Param("emailId") String emailId, @Param("password") String password);
+	
+    @Query("from Employee where emailId = :emailId")
+    Employee findByEmailId(@Param("emailId") String emailId);
 
 }
