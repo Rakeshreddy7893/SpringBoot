@@ -23,6 +23,8 @@ public class Employee {
     private String country;
     private String emailId;
     private String password;
+    private String phoneNumber;
+    private String otp;
 
     // Implementing Mapping Between Employee and Department
     @ManyToOne
@@ -34,18 +36,20 @@ public class Employee {
 
     // Parameterized Constructor without empId
     public Employee(String empName, double salary, String gender, Date doj, String country, String emailId,
-            String password) {
+            String password, String phoneNumber, String otp) {
         this.empName = empName;
         this.salary = salary;
         this.gender = gender;
         this.doj = doj;
         this.country = country;
         this.emailId = emailId;
-        this.password = password;
+        this.password = hashPassword(password);
+        this.phoneNumber = phoneNumber;
+        this.otp = otp;
     }
 
     public Employee(int empId, String empName, double salary, String gender, Date doj, String country, String emailId,
-            String password) {
+            String password, String phoneNumber, String otp) {
         this.empId = empId;
         this.empName = empName;
         this.salary = salary;
@@ -53,10 +57,28 @@ public class Employee {
         this.doj = doj;
         this.country = country;
         this.emailId = emailId;
-        this.password = password;
+        this.password = hashPassword(password);
+        this.phoneNumber = phoneNumber;
+        this.otp = otp;
     }
 
-    // Generating Getter for department Variable
+    public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+
+	// Generating Getter for department Variable
     public Department getDepartment() {
         return department;
     }
@@ -125,9 +147,13 @@ public class Employee {
     public void setPassword(String password) {
         this.password = hashPassword(password);
     }
-    
-    private String hashPassword(String password){
-    	return BCrypt.hashpw(password, BCrypt.gensalt());
+
+    public boolean checkPassword(String candidatePassword) {
+        return BCrypt.checkpw(candidatePassword, this.password);
     }
-    
+
+    // Hash the password using BCrypt
+    private String hashPassword(String plainTextPassword) {
+        return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+    }
 }
